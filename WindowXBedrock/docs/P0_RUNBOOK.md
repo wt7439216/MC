@@ -1,7 +1,8 @@
-# P0 运行手册（MCStudio 实机验证）
+# P0 / P0.5 运行手册（MCStudio 实机验证）
 
-> 目标：用最少步骤跑出 v2.1 P0 的五项结论。
-> 前置：本地已通过 `python tools/run_tests.py`（47 项）。
+> 目标：用最少步骤跑出 v2.1 P0 的五项结论，并验证 P0.5 的修复。
+> 前置：本地已通过 `python tools/run_tests.py`（112 项，含 SDK Mock）。
+> **Mock 通过 ≠ 实机通过**：本手册的步骤才是实机门禁。
 
 ---
 
@@ -11,7 +12,7 @@
 WindowXBedrock/
 ├─ behavior_packs/windowxBehavior/
 │  ├─ manifest.json              # 若引擎只认 pack_manifest.json，复制改名
-│  ├─ netease_commands/*.json    # 28 条，三权限族（生成物，勿手改）
+│  ├─ netease_commands/*.json    # 29 条，三权限族（生成物，勿手改）
 │  └─ windowxScripts/            # modMain.py + modCommon/modServer/modClient
 ├─ resource_packs/windowxResource/
 │  ├─ manifest.json
@@ -25,10 +26,11 @@ WindowXBedrock/
 
 ```powershell
 cd WindowXBedrock/tools
-python gen_commands.py            # 28 个指令 JSON
+python gen_commands.py            # 29 个指令 JSON + command_index.py
 python gen_textures.py            # 5 张占位贴图
-python gen_ui.py --windows 24     # UI 槽位（L1=3 / L2=10 / L3=20 / L4=30）
-python run_tests.py               # 47 项回归
+python gen_ui.py                  # 默认 modConfig.HUD_SLOTS=24
+python gen_ui.py --windows 20     # 分级测试用；运行时按实际控件探测槽位
+python run_tests.py               # 112 项（纯逻辑 + SDK Mock）
 ```
 
 ## 2. 导入 MCStudio
@@ -155,3 +157,22 @@ python run_tests.py               # 47 项回归
 | 点击穿透整屏失效 | `SetIsSwallow` 是**界面级**，需分两个 HUD 界面（P1 处理） |
 | 指令没反应 | 看 `CustomCommandTriggerServerEvent` 的 `args` 键名，用日志打印一次真实结构再对齐 |
 | 相机复原不了 | 检查是否监听了 `DimensionChangeFinishClientEvent` 与退出事件；`CameraGuard.exit()` 是否被调用 |
+
+---
+
+## 11. P0.5 新增验证（实机必跑）
+
+| # | 步骤 | 期望 | 失败即判定 |
+|---|---|---|---|
+| V1 | 在 `OnCustomCommand` 第一行临时 `logger.info(repr(args))`，各触发一次 | 看到 `command` / `args=[{name,type,value}]` / `variant` / `origin={entityId?,dimension,blockPos}` | 字段与 `docs/OFFICIAL_FACTS.md` 不符 → 解析层需再修 |
+| V2 | 普通玩家 `/wxcreate a 120 80` | 成功；`/wxastop all` 无补全或被拒 | 若玩家能执行管理族 → 权限失败 |
+| V3 | 管理员（op=true）`/wxalist all` | 列出各玩家窗口 | 若 op 仍被拒 → `GetPlayerAbilities` 键名/时机问题 |
+| V4 | 命令方块触发 `wxscreate scene1` | 成功，窗口 owner=world；广播给所有客户端 | 若失败 → `permission_level` 应为 `game_directors` |
+| V5 | 客户端改窗口位置后看服务端日志 | 出现 `拒绝客户端写请求 EV_CMD` | 若状态被改 → 安全边界失效 |
+| V6 | 断线重连 | 收到 2 个 `wx:full`（p1 与 world）；窗口复原 | 未收到 → 加入事件没触发 |
+| V7 | 手动让 HUD 少一个 `/winN/bar_drag` | 日志 `hud api error ...`；该槽位不可拖；其余正常 | 若静默无窗口 → 关键错误被吞 |
+| V8 | 相机：`set_camera(..., fov=5)` | FOV 被钳到 30，无崩溃 | 崩溃/未钳制 → 适配层问题 |
+| V9 | 相机：切维度 / 退出世界 | 视角、FOV、第三人称模式全部复原 | 未复原 → `CameraGuard` 未接线 |
+| V10 | 临时把 `SetFov` 改错名制造失败 | `set_camera` 返回 False，日志 error，且不宣称成功 | 返回 True → 失败被伪装 |
+
+> 每项记录「通过 / 未通过 / 现象」，回填 `docs/P0_5_REVIEW.md` §6。

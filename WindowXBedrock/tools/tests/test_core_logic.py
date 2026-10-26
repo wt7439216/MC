@@ -2,7 +2,6 @@
 """缓动 / 坐标 / 相机数学 / 协议 的纯逻辑测试。"""
 from __future__ import division
 
-import math
 import os
 import sys
 import unittest

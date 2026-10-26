@@ -20,11 +20,11 @@ class CommandSchemaTest(unittest.TestCase):
         self.assertEqual([], gc.validate())
 
     def test_counts(self):
-        self.assertEqual(28, len(gc.SCHEMA))
+        self.assertEqual(29, len(gc.SCHEMA))
         fam = {}
         for c in gc.SCHEMA:
             fam[c['family']] = fam.get(c['family'], 0) + 1
-        self.assertEqual(17, fam['wx'])
+        self.assertEqual(18, fam['wx'])
         self.assertEqual(7, fam['wxs'])
         self.assertEqual(4, fam['wxa'])
 
@@ -54,7 +54,7 @@ class CommandSchemaTest(unittest.TestCase):
                                'netease_commands')
         self.assertTrue(os.path.isdir(out_dir), 'run gen_commands.py first')
         files = [f for f in os.listdir(out_dir) if f.endswith('.json')]
-        self.assertEqual(28, len(files))
+        self.assertEqual(29, len(files))
         for c in gc.SCHEMA:
             path = os.path.join(out_dir, gc.file_name(c))
             self.assertTrue(os.path.exists(path), path)

@@ -21,10 +21,14 @@ import argparse
 import io
 import json
 import os
+import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(HERE)
 UI_DIR = os.path.join(PROJECT, 'resource_packs', 'windowxResource', 'ui')
+
+sys.path.insert(0, os.path.join(PROJECT, 'behavior_packs', 'windowxBehavior'))
+from windowxScripts.modCommon import modConfig  # noqa: E402
 
 NS = 'windowx_hud'
 
@@ -145,13 +149,23 @@ def build(windows):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--windows', type=int, default=24, help='窗口槽位数（L1=3 L2=10 L3=20 L4=30）')
+    ap.add_argument('--windows', type=int, default=None,
+                    help='窗口槽位数（默认取 modConfig.HUD_SLOTS；L1=3 L2=10 L3=20 L4=30）')
     ns = ap.parse_args()
+
+    target = int(ns.windows if ns.windows is not None else modConfig.HUD_SLOTS)
+    if target < 1 or target > int(modConfig.HUD_SLOT_PROBE_LIMIT):
+        print('[FAIL] windows 必须在 1..%d' % modConfig.HUD_SLOT_PROBE_LIMIT)
+        return 2
+    if target != int(modConfig.HUD_SLOTS):
+        print('[WARN] 生成 %d 个槽位，与 modConfig.HUD_SLOTS=%d 不同；'
+              '运行时按 UI 实际控件探测（hudScreen._detect_slots），仅用于性能分级测试。'
+              % (target, modConfig.HUD_SLOTS))
 
     if not os.path.isdir(UI_DIR):
         os.makedirs(UI_DIR)
 
-    defs = build(ns.windows)
+    defs = build(target)
     path = os.path.join(UI_DIR, 'windowx_hud.json')
     with io.open(path, 'w', encoding='utf-8') as fh:
         fh.write(json.dumps(defs, ensure_ascii=False, indent=2))
@@ -162,7 +176,7 @@ def main():
         fh.write(json.dumps(ui_defs, ensure_ascii=False, indent=2))
         fh.write(u'\n')
 
-    print('[OK] windows=%d -> %s' % (ns.windows, path))
+    print('[OK] windows=%d -> %s' % (target, path))
     return 0
 
 

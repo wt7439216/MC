@@ -131,6 +131,8 @@ SCHEMA = [
     dict(name='wxscore', family='wx', desc='把窗口属性写入记分板',
          args=[arg('id', 'str'),
                arg('objective', 'str')]),
+    # 重同步：只由引擎驱动的可信入口触发（origin 由引擎提供）
+    dict(name='wxresync', family='wx', desc='请求重发自己的窗口全量状态', args=[]),
 
     # ---------------- 演出族 game_directors（命令方块可用）----------------
     dict(name='wxscreate', family='wxs', desc='创建场景窗口（无玩家归属，命令方块可用）',
@@ -189,8 +191,6 @@ def validate():
         if cmd['family'] not in FAMILY_PERMISSION:
             errors.append('bad family: %s' % name)
         args = cmd['args']
-        if not args:
-            errors.append('no args: %s' % name)
         seen_default = False
         for a in args:
             if a['type'] not in ALLOWED_TYPES:
@@ -244,6 +244,30 @@ def file_name(cmd):
         'wxb_%s_%s.json' % (cmd['family'], cmd['name'][3:])
 
 
+def emit_index(cmds, out_dir):
+    """生成 name -> (family, action) 索引，供服务端精确分发。
+
+    必须用显式索引而不是前缀猜测：`wxscore`/`wxshake`/`wxsize`/`wxstop`
+    都以 `wxs` 开头，前缀匹配会把它们误判成演出族。
+    """
+    lines = [
+        '# -*- coding: utf-8 -*-',
+        '"""自动生成，请勿手改。由 tools/gen_commands.py 输出。"""',
+        '',
+        'COMMANDS = {',
+    ]
+    for cmd in sorted(cmds, key=lambda c: c['name']):
+        family = cmd['family']
+        action = cmd['name'][len(family):]
+        lines.append('    %r: (%r, %r),' % (cmd['name'], family, action))
+    lines.append('}')
+    lines.append('')
+    path = os.path.join(out_dir, 'command_index.py')
+    with io.open(path, 'w', encoding='utf-8') as fh:
+        fh.write(u'\n'.join(lines))
+    return path
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--check', action='store_true')
@@ -274,6 +298,10 @@ def main():
             fh.write(u'\n')
         written += 1
     print('[OK] wrote %d files -> %s' % (written, OUT_DIR))
+    index_path = emit_index(SCHEMA, os.path.join(PROJECT, 'behavior_packs',
+                                                 'windowxBehavior', 'windowxScripts',
+                                                 'modCommon'))
+    print('[OK] command index -> %s' % index_path)
     return 0
 
 

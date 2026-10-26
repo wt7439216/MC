@@ -35,4 +35,12 @@ class WindowXBedrock(object):
 
     @Mod.DestroyClient()
     def wx_destroy_client(self):
-        pass
+        # 卸载时归还相机与 UI 槽位，避免玩家卡在独立相机/残留窗口
+        try:
+            sys_ = clientApi.GetSystem(modConfig.MOD_NAME, modConfig.CLIENT_SYSTEM)
+            if sys_ is not None and hasattr(sys_, 'shutdown'):
+                report = sys_.shutdown()
+                if isinstance(report, dict) and not report.get('ok', True):
+                    print('[WX] camera restore on unload failed: %r' % (report,))
+        except Exception as exc:
+            print('[WX] destroy client failed: %r' % (exc,))

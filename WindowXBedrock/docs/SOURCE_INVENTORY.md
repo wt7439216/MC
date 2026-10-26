@@ -28,7 +28,7 @@
 
 | 源功能（代表类） | 分类 | 目标实现 |
 |---|---|---|
-| `/windowx` `/windowxm` 指令树（`command/*`） | **交付** | `netease_commands/` 28 条（三权限族，零变体） |
+| `/windowx` `/windowxm` 指令树（`command/*`） | **交付** | `netease_commands/` 29 条（三权限族，零变体，含 `wxresync`） |
 | 30+ 缓动（`client/EaseFunctions`） | **交付** | `modCommon/easing.py`（已实现 50 条，含端点保证） |
 | 动画任务（`WindowAnimator`/`AnimationTask`） | **交付** | `modCommon/animator_core.py` + 客户端 tick |
 | 2D 物理与碰撞（`ph*` 字段） | **交付** | `modCommon/physics2d.py`（重力/摩擦/弹性/拖拽甩出） |
@@ -65,7 +65,7 @@
 P0 只要求"能证明风险"的最小集：
 
 - ✅ 指令三族（29 条 JSON 已生成，权限/归属逻辑已单测）
-- ✅ 缓动/动画/物理/布局/协议（纯逻辑已实现并 47 项测试通过）
+- ✅ 缓动/动画/物理/布局/协议（纯逻辑已实现并 112 项测试通过，含 SDK Mock）
 - ✅ 摄像机坐标与守卫（`cameraMath`/`CameraGuard` 已实现，待实机校准）
 - ⏳ UI 后端与性能（代码就绪，等 MCStudio 实机跑 L1–L4）
 - ✅ G0 授权与来源（见 `LICENSE_SOURCE_REPORT.md`）
