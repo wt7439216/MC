@@ -98,6 +98,22 @@ def actor_from_origin(origin, is_admin=False):
     return actor
 
 
+def describe_event(ev, keep_values=False):
+    """给调试日志用的事件摘要：**不输出完整实体 id，也不输出坐标**。"""
+    origin = ev.get('origin') or {}
+    eid = str(origin.get('entityId') or '')
+    masked = (eid[:3] + '***') if eid else '<none>'
+    parts = []
+    for name in sorted((ev.get('args') or {}).keys()):
+        if keep_values:
+            parts.append('%s=%s' % (name, repr(ev['args'][name])[:24]))
+        else:
+            parts.append('%s:%s' % (name, type(ev['args'][name]).__name__))
+    return ('command=%s variant=%d args=[%s] origin=%s dim=%r has_entity=%s'
+            % (ev.get('command'), int(ev.get('variant') or 0), ','.join(parts),
+               masked, origin.get('dimension'), bool(eid)))
+
+
 def write_back_failure(raw, message):
     """按官方字段把失败写回事件，让引擎以红色提示（不依赖 lang 键）。"""
     if not isinstance(raw, dict):

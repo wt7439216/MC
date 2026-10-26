@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
-"""摄像机状态守卫（P0.5：异常路径也必须尝试复原，且如实报告失败）。
+"""摄像机状态守卫（P0.5b）。
+
+不变量：
+  1. **快照失败 → 绝不修改摄像机**（不 depart，不 set），直接返回 False；
+  2. depart 失败 → 视为"状态未知"，立即尝试按快照恢复，并返回 False；
+  3. exit() 一定尝试全部恢复步骤，且如实返回 ok/failed。
 
 用法：
-    guard.enter()   -> bool（快照是否成功；失败也仍会 depart）
-    guard.exit()    -> {'ok','failed','attempted'}（必须检查）
+    ok = guard.enter()
+    if not ok: 不要做任何相机操作
+    report = guard.exit()   # 必须检查 report['ok']
 """
 from __future__ import division
 
@@ -15,45 +21,65 @@ class CameraGuard(object):
         self.adapter = adapter
         self.snap = None
         self.active = False
+        self.enter_failed = None
         self.last_report = None
 
     def enter(self):
         if self.active:
             return True
+        self.enter_failed = None
         try:
-            self.snap = self.adapter.snapshot()
+            snap = self.adapter.snapshot()
         except Exception as exc:
             logger.error('[WX] camera snapshot exception: %r' % (exc,))
-            self.snap = {'ok': False, 'fov': None, 'offset': None,
-                         'perspective': None}
+            snap = {'ok': False, 'fov': None, 'offset': None,
+                    'perspective': None}
+        self.snap = snap
+
+        if not snap.get('ok'):
+            # 关键：快照不可用时不 depart，保证"失败不改状态"
+            self.enter_failed = 'snapshot'
+            logger.error('[WX] camera snapshot failed; camera left untouched')
+            return False
+
         try:
             departed = self.adapter.depart()
         except Exception as exc:
             logger.error('[WX] camera depart exception: %r' % (exc,))
             departed = False
+        if not departed:
+            self.enter_failed = 'depart'
+            logger.error('[WX] camera depart failed; restoring snapshot')
+            try:
+                self.adapter.restore(snap)
+            except Exception as exc:
+                logger.error('[WX] camera rollback exception: %r' % (exc,))
+            return False
+
         self.active = True
-        ok = bool(self.snap.get('ok')) and departed
-        if not ok:
-            logger.warn('[WX] camera enter degraded (snapshot=%r depart=%r)'
-                        % (self.snap.get('ok'), departed))
-        return ok
+        return True
 
     def exit(self):
-        """无论如何都走完整恢复流程；返回真实结果。"""
         if not self.active:
+            if self.enter_failed:
+                report = {'ok': False, 'attempted': [],
+                          'failed': [self.enter_failed]}
+                self.enter_failed = None
+                self.snap = None
+                self.last_report = report
+                return report
             return {'ok': True, 'attempted': [], 'failed': []}
+
         report = {'ok': False, 'attempted': [], 'failed': ['restore-not-run']}
         snapshot_ok = bool((self.snap or {}).get('ok'))
         try:
             report = self.adapter.restore(self.snap)
             if not snapshot_ok:
-                # 快照失败意味着"原状态未知"，恢复不能宣称成功
                 report = {'ok': False,
                           'attempted': report.get('attempted', []),
                           'failed': list(report.get('failed') or []) + ['snapshot']}
         except Exception as exc:
             logger.error('[WX] camera restore exception: %r' % (exc,))
-            # 再兜底一次最小恢复
             for name in ('UnDepartCamera', 'ResetCameraPos', 'UnLockCamera'):
                 try:
                     self.adapter._call(self.adapter._components()[0], name)
@@ -66,7 +92,6 @@ class CameraGuard(object):
         return report
 
     def soft_exit(self):
-        """切换机位时只复原视角，不丢状态。"""
         if not self.active:
             return {'ok': True, 'attempted': [], 'failed': []}
         try:

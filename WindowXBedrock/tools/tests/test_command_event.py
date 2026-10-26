@@ -92,6 +92,33 @@ class ParseEventTest(unittest.TestCase):
         self.assertEqual(('wxs', 'show'), ce.split_command('wxsshow'))
 
 
+class DescribeEventTest(unittest.TestCase):
+    def test_masks_identity_and_hides_position(self):
+        ev = ce.parse_event({
+            'command': 'wxmove',
+            'args': [{'name': 'id', 'type': 'str', 'value': 'w1'},
+                     {'name': 'x', 'type': 'str', 'value': 'p50'}],
+            'variant': 2,
+            'origin': {'entityId': 'player-abcdef', 'dimension': 0,
+                       'blockPos': (123, 64, 456)},
+        })
+        text = ce.describe_event(ev)
+        self.assertIn('command=wxmove', text)
+        self.assertIn('variant=2', text)
+        self.assertIn('has_entity=True', text)
+        self.assertIn('pla***', text)
+        self.assertNotIn('player-abcdef', text)
+        self.assertNotIn('123', text)
+        self.assertNotIn('456', text)
+
+    def test_types_only_by_default(self):
+        ev = ce.parse_event({'command': 'wxcreate',
+                             'args': [{'name': 'id', 'value': 'secret-id'}]})
+        text = ce.describe_event(ev)
+        self.assertIn('id:str', text)
+        self.assertNotIn('secret-id', text)
+
+
 class WriteBackTest(unittest.TestCase):
     def test_failure_flag(self):
         raw = {}

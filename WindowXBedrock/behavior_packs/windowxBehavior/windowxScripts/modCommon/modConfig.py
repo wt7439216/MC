@@ -68,6 +68,8 @@ SCENE_OWNER = 'world'
 ALLOW_CLIENT_WRITES = False
 # 未取得平台确认前，不用 return_msg_key 回显（避免 lang 键缺失导致误导）
 RETURN_MSG_ENABLED = False
+# V1 用：打印事件结构（只输出字段名/类型，实体 id 打码，不输出坐标）
+DEBUG_LOG_COMMAND_EVENT = False
 # 管理员兜底白名单（GetPlayerAbilities 不可用时的 fail-closed 之后的补充）
 ADMIN_UIDS = frozenset()
 

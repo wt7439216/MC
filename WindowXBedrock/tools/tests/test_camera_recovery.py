@@ -77,6 +77,27 @@ class CameraGuardTest(unittest.TestCase):
         self.assertFalse(report['ok'])
         self.assertIn('snapshot', report['failed'])
 
+    def test_snapshot_failure_does_not_touch_camera(self):
+        """快照失败时不得调用 DepartCamera（不改状态）。"""
+        STATE.camera_fail = {'GetFov'}
+        guard = cameraGuard.CameraGuard(cameraAdapter.CameraAdapter('level1', 'p1'))
+        self.assertFalse(guard.enter())
+        self.assertFalse(guard.active)
+        names = [c[0] for c in STATE.calls]
+        self.assertNotIn('DepartCamera', names)
+        self.assertNotIn('SetCameraPos', names)
+
+    def test_depart_failure_rolls_back(self):
+        STATE.camera_fail = {'DepartCamera'}
+        guard = cameraGuard.CameraGuard(cameraAdapter.CameraAdapter('level1', 'p1'))
+        self.assertFalse(guard.enter())
+        self.assertFalse(guard.active)
+        names = [c[0] for c in STATE.calls]
+        self.assertIn('UnDepartCamera', names, 'depart 失败后应尝试回滚')
+        report = guard.exit()
+        self.assertFalse(report['ok'])
+        self.assertIn('depart', report['failed'])
+
     def test_restore_failure_is_reported(self):
         guard = cameraGuard.CameraGuard(cameraAdapter.CameraAdapter('level1', 'p1'))
         guard.enter()

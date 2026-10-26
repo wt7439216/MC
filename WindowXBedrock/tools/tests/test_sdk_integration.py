@@ -123,6 +123,36 @@ class ServerIntegrationTest(unittest.TestCase):
         self.assertEqual(2, len(fulls))
         self.assertFalse(raw.get('return_failed', False))
 
+    def test_resync_rejected_for_command_block(self):
+        raw = raw_cmd('wxresync', entity=None)
+        self.sys.OnCustomCommand(raw)
+        self.assertTrue(raw.get('return_failed'))
+        self.assertEqual([], STATE.sent_events(modConfig.EV_FULL))
+
+    def test_resync_rejected_for_unknown_entity(self):
+        raw = raw_cmd('wxresync', entity='ghost')
+        self.sys.OnCustomCommand(raw)
+        self.assertTrue(raw.get('return_failed'))
+        self.assertEqual([], STATE.sent_events(modConfig.EV_FULL))
+
+    def test_debug_log_masks_identity(self):
+        old = modConfig.DEBUG_LOG_COMMAND_EVENT
+        modConfig.DEBUG_LOG_COMMAND_EVENT = True
+        try:
+            STATE.players = ['p1', 'player-long-id']
+            raw = raw_cmd('wxcreate', [a('id', 'w1')], entity='player-long-id',
+                          block=(123, 64, 456))
+            self.sys.OnCustomCommand(raw)
+        finally:
+            modConfig.DEBUG_LOG_COMMAND_EVENT = old
+        lines = [m for (lv, m) in sdkmock.LOGGER.lines if '[WX-DEV]' in m]
+        self.assertTrue(lines, '应输出调试行')
+        joined = '\n'.join(lines)
+        self.assertNotIn('player-long-id', joined)
+        self.assertNotIn('123', joined)      # 不输出坐标
+        self.assertIn('pla***', joined)
+        self.assertIn('has_entity=True', joined)
+
     # ---------------- rev / 路由 ----------------
     def test_rev_increments_per_owner(self):
         self.sys.OnCustomCommand(raw_cmd('wxcreate', [a('id', 'w1')]))

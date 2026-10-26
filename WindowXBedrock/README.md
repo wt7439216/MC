@@ -3,8 +3,10 @@
 把 NeoForge 版 WindowX 的**表现与指令语义**移植到网易《我的世界》基岩版中国版。
 方案见上级目录 `WindowX-基岩版移植方案-v2.1.md`。
 
-> 当前阶段：**P0.5 修复完成**（事件解析、HUD 对象层级、安全边界、rev 重同步、相机恢复）。
-> 纯逻辑 + SDK Mock 集成测试共 **112 项通过**；**尚未做 MCStudio 实机验证**。
+> 当前阶段：**P0.5 修复完成 + 实机测试准备就绪**（事件解析、HUD 对象层级、安全边界、
+> rev 重同步、相机恢复、生命周期顺序、`wxresync` 身份校验）。
+> 纯逻辑 + SDK Mock 集成测试共 **123 项通过**；**尚未做 MCStudio 实机验证**。
+> 上机步骤见 `docs/P0_5_REAL_DEVICE_READY.md`。
 
 ## 快速开始
 
@@ -13,7 +15,7 @@ cd tools
 python gen_commands.py          # 29 条指令 JSON + command_index.py（唯一数据源）
 python gen_textures.py          # 占位 UI 贴图
 python gen_ui.py                # 默认 HUD_SLOTS=24；可 --windows N 做分级测试
-python run_tests.py             # 112 项（纯逻辑 + SDK Mock）
+python run_tests.py             # 123 项（纯逻辑 + SDK Mock）
 ruff check --select E9,F --target-version py39 .
 ```
 

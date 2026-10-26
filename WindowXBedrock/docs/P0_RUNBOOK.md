@@ -160,19 +160,84 @@ python run_tests.py               # 112 项（纯逻辑 + SDK Mock）
 
 ---
 
-## 11. P0.5 新增验证（实机必跑）
+## 11. V1–V10 实机验证（细化版，替代旧表）
 
-| # | 步骤 | 期望 | 失败即判定 |
-|---|---|---|---|
-| V1 | 在 `OnCustomCommand` 第一行临时 `logger.info(repr(args))`，各触发一次 | 看到 `command` / `args=[{name,type,value}]` / `variant` / `origin={entityId?,dimension,blockPos}` | 字段与 `docs/OFFICIAL_FACTS.md` 不符 → 解析层需再修 |
-| V2 | 普通玩家 `/wxcreate a 120 80` | 成功；`/wxastop all` 无补全或被拒 | 若玩家能执行管理族 → 权限失败 |
-| V3 | 管理员（op=true）`/wxalist all` | 列出各玩家窗口 | 若 op 仍被拒 → `GetPlayerAbilities` 键名/时机问题 |
-| V4 | 命令方块触发 `wxscreate scene1` | 成功，窗口 owner=world；广播给所有客户端 | 若失败 → `permission_level` 应为 `game_directors` |
-| V5 | 客户端改窗口位置后看服务端日志 | 出现 `拒绝客户端写请求 EV_CMD` | 若状态被改 → 安全边界失效 |
-| V6 | 断线重连 | 收到 2 个 `wx:full`（p1 与 world）；窗口复原 | 未收到 → 加入事件没触发 |
-| V7 | 手动让 HUD 少一个 `/winN/bar_drag` | 日志 `hud api error ...`；该槽位不可拖；其余正常 | 若静默无窗口 → 关键错误被吞 |
-| V8 | 相机：`set_camera(..., fov=5)` | FOV 被钳到 30，无崩溃 | 崩溃/未钳制 → 适配层问题 |
-| V9 | 相机：切维度 / 退出世界 | 视角、FOV、第三人称模式全部复原 | 未复原 → `CameraGuard` 未接线 |
-| V10 | 临时把 `SetFov` 改错名制造失败 | `set_camera` 返回 False，日志 error，且不宣称成功 | 返回 True → 失败被伪装 |
+> 全部默认玩家名为 `Tester`、窗口 id 为 `w1`；命令方块位于 `(10, 64, 10)`。
+> 每项结束记录到 `docs/P0_5_REAL_DEVICE_READY.md` §5 的结果表。
+> **未执行的项一律记 `NOT RUN`，不得写"通过"。**
 
-> 每项记录「通过 / 未通过 / 现象」，回填 `docs/P0_5_REVIEW.md` §6。
+### V1 事件结构（可开关、脱敏）
+
+- 操作：把 `modConfig.DEBUG_LOG_COMMAND_EVENT` 改为 `True`，分别用**玩家**与**命令方块**各触发一次 `wxcreate`；随后改回 `False`。
+- 日志关键词：`[WX-DEV] command=wxcreate variant=0 args=[id:str,...] origin=*** dim=0 has_entity=True`
+- 预期：字段名/类型正确；`origin` 打码（`前3位+***` 或 `<none>`）；**不出现完整 entityId、不出现坐标**。
+- 失败处理：字段缺失 → 对照 `docs/OFFICIAL_FACTS.md` §1；若出现身份/坐标 → 立即关开关并修 `describe_event`。
+- 注意：命令方块那次应为 `has_entity=False`、`origin=<none>`。
+
+### V2 玩家族权限
+
+- 操作：普通玩家 `/wxcreate a 120 80`；再 `/wxastop all`。
+- 日志关键词：成功时 `[WX]` 无 error；被拒时 `[WX] cmd failed: 当前身份无权使用该指令（wxa）`。
+- 预期：前者创建成功且只影响自己；后者在 Tab 不出现或被拒（`return_failed` 红色提示）。
+- 失败处理：玩家能执行 `wxa*` → 检查 `permission_level` 是否被误设 `any`，以及 `permissions.can_run`。
+
+### V3 管理员真实权限
+
+- 操作：给 `Tester` op 后 `/wxalist all`；再取消 op 重复一次。
+- 日志关键词：op 时无 `cmd failed`；取消后出现 `[WX] cmd failed: 当前身份无权使用该指令（wxa）`。
+- 预期：两次结果相反，说明 `GetPlayerAbilities().op` 生效。
+- 失败处理：op 仍被拒 → 打印一次 `GetPlayerAbilities()` 返回值核对键名；若该 API 不可用，记录并改用 `ADMIN_UIDS` 临时白名单（仅测试服）。
+
+### V4 命令方块（演出族）
+
+- 操作：命令方块执行 `wxscreate s1 240 140`；红石块触发一次。
+- 日志关键词：无 `cmd failed`；客户端 `[WX] toast` 不发给实体（无 entityId）。
+- 预期：窗口 owner=`world`，所有客户端都看到；玩家 `/wxs…` 仍被拒。
+- 失败处理：失败先查 JSON `permission_level` 是否为 `game_directors`；再查命令名是否在 `command_index.py`。
+
+### V5 未授权客户端写入（主动构造）
+
+- 准备：先用 `/wxcreate w1 200 120`，再 `/wxget w1 x` 记录当前 X。
+- 操作：在 `hudScreen.Create()` 末尾**临时**加一行（验证后删除）：
+  ```python
+  self.system.debug_send_unauthorized_write('<另一个玩家id或自己>', 'w1')
+  ```
+- 日志关键词：服务端出现 `拒绝客户端写请求 EV_CMD`（只打印一次）；客户端出现 `DEBUG EV_CMD sent, expect server reject`。
+- 预期：服务端窗口状态**不变**（再 `/wxget w1 x` 与记录一致）；无新补丁下发。
+- 失败处理：若 X 改变或出现补丁 → 安全边界失效，立即停止实机并回滚 `ALLOW_CLIENT_WRITES` 相关改动。
+
+### V6 断线重连 / FULL
+
+- 操作：创建 2 个窗口后退出世界并重进。
+- 日志关键词：客户端 `[WX] HUD backend bound`；服务端发送两次 `wx:full`（`owner=Tester` 与 `owner=world`）。
+- 预期：窗口按 rev 复原；无需手动 `/wxresync`。
+- 失败处理：未收到 → 检查 `AddServerPlayerEvent` 的 id 键名（`id/playerId/entityId` 三种已兼容）；仍失败可手动 `/wxresync` 兜底并记录。
+
+### V7 HUD 关键错误不静默
+
+- 操作：把 `resource_packs/.../ui/windowx_hud.json` 中 `win2/bar_drag` 删掉，重进。
+- 日志关键词：`[WX] hud api error /win2/bar_drag ...`、`[WX] HUD Create: slots=24 touch_ready=23 errors=N`。
+- 预期：其余窗口正常；该槽位不可拖；不崩溃。
+- 失败处理：无任何错误日志 → `hudScreen._error` 未生效（检查是否走了兼容分支）。
+
+### V8 FOV 钳制
+
+- 操作：`self.set_camera((x,y,z), 0, 0, fov=5)`。
+- 日志关键词：无 error。
+- 预期：不崩溃；实际 FOV ≥ 30（可用 F3/调试读出）。
+- 失败处理：崩溃 → 相机组件调用方式有误；FOV 仍为 5 → 钳制未生效。
+
+### V9 相机复原（多路径）
+
+- 操作：依次测试：退出世界、切换维度、断线重连、`shutdown()`（卸载组件）。
+- 日志关键词：**不应**出现 `[WX] camera recovery incomplete` / `camera restore incomplete`。
+- 预期：视角、FOV、第一/第三人称、锁定状态全部恢复。
+- 失败处理：出现 incomplete → 按 `failed` 列表定位缺失方法；若 `snapshot` 失败，说明 `GetFov` 等不可用。
+
+### V10 失败不得伪装成功
+
+- 操作：把 `cameraAdapter.set_fov` 内的 `'SetFov'` 临时改成 `'SetFovX'`。
+- 日志关键词：`[WX] camera api SetFovX failed: method missing`、`[WX] camera apply failed`。
+- 预期：`set_camera` 返回 `False`；guard 退出；不留下"已应用"的假象。
+- 失败处理：返回 True → 失败被吞，必须修 `_call`。
+- 收尾：改回 `'SetFov'` 并重跑 `run_tests.py`。

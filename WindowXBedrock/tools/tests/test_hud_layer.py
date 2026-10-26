@@ -121,6 +121,9 @@ class HudScreenTest(unittest.TestCase):
         self.node.Create()
         self.assertEqual(3, self.node.slots)
         self.assertEqual(3, self.node.touch_ready)
+        # 关键顺序：attach 时槽位已经探测完成（否则 backend 会用默认 24）
+        self.assertIsNotNone(self.fake_sys.attached)
+        self.assertEqual(3, self.fake_sys.attached.slots)
 
     def test_touch_callbacks_registered(self):
         self.node.Create()
@@ -181,6 +184,52 @@ class ClientCompositeKeyTest(unittest.TestCase):
                         'windows': [make_win('w1'), make_win('w2')]})
         self.assertIn(('world', 'w1'), self.cs.windows)
         self.assertEqual(2, len([k for k in self.cs.windows if k[0] == 'p1']))
+
+
+class FullLifecycleTest(unittest.TestCase):
+    """真实 WXClientSystem + WXHudScreen：Create -> Update -> 触摸 -> shutdown。"""
+
+    def setUp(self):
+        sdkmock.reset()
+        STATE.ui_slots = 2          # 故意与 modConfig.HUD_SLOTS=24 不同
+        self.cs = clientSystem.WXClientSystem('windowx', modConfig.CLIENT_SYSTEM)
+        sys.modules['mod.client.extraClientApi'].GetSystem = lambda *a: self.cs
+        self.node = hudScreen.WXHudScreen('windowx', 'windowx_hud', {})
+
+    def test_create_detects_before_attach(self):
+        self.node.Create()
+        self.assertEqual(2, self.node.slots)
+        # 后端按 UI 实际槽位绑定，而不是默认 24
+        self.assertEqual(2, self.cs.backend.slots)
+        self.assertEqual([0, 1], sorted(self.cs.backend.controls.keys()))
+        self.assertTrue(self.cs.backend.available)
+
+    def test_update_applies_window(self):
+        self.node.Create()
+        self.cs.OnPatch({'v': 1, 'owner': 'p1', 'rev': 1,
+                         'ops': [{'op': 'create', 'win': make_win()}]})
+        self.node.Update()
+        self.assertTrue(any(c[0] == 'SetFullPosition' and c[1] == '/win0'
+                            for c in STATE.calls))
+        self.assertIn(('p1', 'w1'), self.cs.windows)
+
+    def test_shutdown_releases_slots(self):
+        self.node.Create()
+        self.cs.OnPatch({'v': 1, 'owner': 'p1', 'rev': 1,
+                         'ops': [{'op': 'create', 'win': make_win()}]})
+        self.node.Update()
+        report = self.cs.shutdown()
+        self.assertTrue(report['ok'], report)
+        self.assertEqual({}, self.cs.windows)
+        self.assertTrue(any(c[0] == 'SetVisible' and c[1] == '/win0' and c[2] is False
+                            for c in STATE.calls))
+
+    def test_debug_unauthorized_write_is_emitted(self):
+        ok = self.cs.debug_send_unauthorized_write('p2', 'w1')
+        self.assertTrue(ok)
+        sent = [s for s in STATE.sent if s[2] == modConfig.EV_CMD]
+        self.assertTrue(sent)
+        self.assertEqual('p2', sent[-1][3]['owner'])
 
 
 if __name__ == '__main__':

@@ -59,6 +59,8 @@ class WXServerSystem(ServerSystem):
         family, action = command_event.split_command(ev['command'])
         if family is None:
             return
+        if modConfig.DEBUG_LOG_COMMAND_EVENT:
+            logger.info('[WX-DEV] %s' % command_event.describe_event(ev))
 
         entity_id = ev['origin']['entityId']
         is_admin = self.perms.is_admin(entity_id) if entity_id else False
@@ -68,7 +70,16 @@ class WXServerSystem(ServerSystem):
             return
 
         if family == modConfig.FAMILY_PLAYER and action == 'resync':
-            self._send_full_bundle(actor.get('id'))
+            # 重同步必须绑定"真实的玩家身份"：命令方块（无 entityId）不允许；
+            # 传入的 id 还必须在当前在线列表里，避免构造 origin 探查他人数据。
+            pid = ev['origin']['entityId']
+            if not pid:
+                self._fail(raw, actor, 'wxresync 只能由玩家执行')
+                return
+            if pid not in self.perms.player_ids():
+                self._fail(raw, actor, 'wxresync 玩家身份校验失败')
+                return
+            self._send_full_bundle(pid)
             self._chat(actor, '§a[WindowX] 已重发窗口状态')
             return
 

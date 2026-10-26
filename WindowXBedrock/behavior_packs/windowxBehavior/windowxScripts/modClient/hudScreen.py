@@ -40,8 +40,10 @@ class WXHudScreen(ScreenNode):
 
     # ---------------- 生命周期 ----------------
     def Create(self):
-        self._attach_system()
+        # 顺序很重要：先探测 UI 实际槽位，再让客户端系统按该数量绑定后端，
+        # 最后注册触摸回调。反过来会让 backend 用默认 24 绑定，导致槽位错配。
         self.slots = self._detect_slots()
+        self._attach_system()
         for i in range(self.slots):
             if self._bind_drag(i):
                 self.touch_ready += 1

@@ -298,6 +298,23 @@ class WXClientSystem(ClientSystem):
         report = self.guard.exit()
         return bool(report.get('ok'))
 
+    # ---------------- V5 专用：构造未授权写请求 ----------------
+    def debug_send_unauthorized_write(self, target_owner=None, wid='w1',
+                                      cx=1.0, cy=1.0):
+        """主动发送一条未授权的 EV_CMD，用于验证服务端拒绝写入。
+
+        仅 DEV_MODE 生效；服务端不信任 payload 中的 owner，
+        因此这里故意填 target_owner（可为其他玩家）以验证越权被拒。
+        """
+        if not modConfig.DEV_MODE:
+            logger.warn('[WX] debug_send_unauthorized_write disabled (DEV_MODE off)')
+            return False
+        payload = {'owner': str(target_owner or self.player_id),
+                   'id': str(wid), 'cx': float(cx), 'cy': float(cy)}
+        self.NotifyToServer(modConfig.EV_CMD, payload)
+        logger.info('[WX] DEBUG EV_CMD sent, expect server reject: %r' % (payload,))
+        return True
+
     def shutdown(self):
         report = self.guard.exit()
         for key in list(self.windows.keys()):
