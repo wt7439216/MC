@@ -1,0 +1,25 @@
+# 原始 WindowX Mod 产物（第三方，不入库）
+/com/
+/assets/
+/data/
+/META-INF/
+/windowx/
+/windowx.mixins.json
+/windowx_icon.png
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# 本地临时产物
+*.log
+*.tmp
+/_local/

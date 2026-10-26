@@ -1,0 +1,13 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxsstop",
+  "description": "[WindowX/演出/命令方块] 停止场景窗口动画",
+  "permission_level": "game_directors",
+  "args": [
+    {
+      "name": "id",
+      "type": "str",
+      "default": "all"
+    }
+  ]
+}

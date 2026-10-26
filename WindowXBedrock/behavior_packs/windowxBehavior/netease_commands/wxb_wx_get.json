@@ -1,0 +1,17 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxget",
+  "description": "[WindowX/玩家自用] 查询窗口属性并回显",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "prop",
+      "type": "str",
+      "description": "可选: x,y,w,h,visible"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "format_version": 1,
+  "header": {
+    "description": "WindowX Bedrock - UI + textures",
+    "name": "WindowXResource",
+    "uuid": "8f6f0b5e-2f3c-4b1a-9e0f-1a2b3c4d5e03",
+    "version": [0, 1, 0]
+  },
+  "modules": [
+    {
+      "description": "WindowX UI resources",
+      "type": "resources",
+      "uuid": "8f6f0b5e-2f3c-4b1a-9e0f-1a2b3c4d5e04",
+      "version": [0, 1, 0]
+    }
+  ]
+}

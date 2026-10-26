@@ -1,0 +1,14 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxastop",
+  "description": "[WindowX/管理] 停止某玩家（或全部）窗口动画",
+  "permission_level": "admin",
+  "args": [
+    {
+      "name": "player",
+      "type": "str",
+      "description": "玩家名或 all",
+      "default": "all"
+    }
+  ]
+}

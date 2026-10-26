@@ -1,0 +1,41 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxsanim",
+  "description": "[WindowX/演出/命令方块] 场景窗口特效",
+  "permission_level": "game_directors",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "kind",
+      "type": "str",
+      "description": "可选: shake,wobble,breath,encircle"
+    },
+    {
+      "name": "a",
+      "type": "float",
+      "description": "强度/幅度",
+      "default": 8.0
+    },
+    {
+      "name": "b",
+      "type": "float",
+      "description": "速度",
+      "default": 1.0
+    },
+    {
+      "name": "c",
+      "type": "float",
+      "description": "时长/半径Y",
+      "default": 0.6
+    },
+    {
+      "name": "d",
+      "type": "float",
+      "description": "角度/周期",
+      "default": 0.0
+    }
+  ]
+}

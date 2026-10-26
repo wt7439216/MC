@@ -1,0 +1,12 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxakill",
+  "description": "[WindowX/管理] 清空某玩家全部窗口",
+  "permission_level": "admin",
+  "args": [
+    {
+      "name": "player",
+      "type": "str"
+    }
+  ]
+}

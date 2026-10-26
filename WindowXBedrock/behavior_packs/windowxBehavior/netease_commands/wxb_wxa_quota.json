@@ -1,0 +1,16 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxaquota",
+  "description": "[WindowX/管理] 设置某玩家窗口配额",
+  "permission_level": "admin",
+  "args": [
+    {
+      "name": "player",
+      "type": "str"
+    },
+    {
+      "name": "limit",
+      "type": "int"
+    }
+  ]
+}

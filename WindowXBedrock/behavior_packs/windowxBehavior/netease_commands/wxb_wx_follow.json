@@ -1,0 +1,28 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxfollow",
+  "description": "[WindowX/玩家自用] 跟随实体或坐标",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "target",
+      "type": "str",
+      "description": "实体 id 或 x,y,z"
+    },
+    {
+      "name": "distance",
+      "type": "float",
+      "default": 4.0
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "按距离缩放强度，0=不缩放",
+      "default": 0.0
+    }
+  ]
+}

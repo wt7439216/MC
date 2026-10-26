@@ -1,0 +1,28 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxcontent",
+  "description": "[WindowX/玩家自用] 设置窗口内容",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "kind",
+      "type": "str",
+      "description": "可选: texture,frames,text"
+    },
+    {
+      "name": "path",
+      "type": "str",
+      "description": "贴图/序列帧/文本"
+    },
+    {
+      "name": "mode",
+      "type": "str",
+      "description": "可选: fit,stretch,original,tile",
+      "default": "fit"
+    }
+  ]
+}

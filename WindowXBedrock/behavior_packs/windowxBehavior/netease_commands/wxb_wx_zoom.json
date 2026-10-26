@@ -1,0 +1,39 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxzoom",
+  "description": "[WindowX/玩家自用] 双轴缩放窗口并可指定锚点",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "w",
+      "type": "float",
+      "description": "目标宽"
+    },
+    {
+      "name": "h",
+      "type": "float",
+      "description": "目标高"
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "default": 1.0
+    },
+    {
+      "name": "ease",
+      "type": "str",
+      "description": "可选: linear,quad,quadout,quadinout,cubic,cubicout,cubicinout,quart,quartout,quartinout,quint,quintout,quintinout,sine,sineout,sineinout,expo,expoout,expoinout,circ,circout,circinout,bounce,bounceout,bounceinout,elastic,elasticout,elasticinout,back,backout,backinout,spring,wave,jump,delay,rush,slowmo,faststart,stutter,glitch,packetloss,freeze,overshoot,snap,jitter,step3,step5,step8",
+      "default": "linear"
+    },
+    {
+      "name": "anchor",
+      "type": "str",
+      "description": "可选: center,topleft,topright,bottomleft,bottomright,left,right,top,bottom",
+      "default": "center"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxshake",
+  "description": "[WindowX/玩家自用] 抖动",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "intensity",
+      "type": "float",
+      "description": "像素幅度",
+      "default": 8.0
+    },
+    {
+      "name": "duration",
+      "type": "float",
+      "description": "秒",
+      "default": 0.6
+    }
+  ]
+}

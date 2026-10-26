@@ -1,0 +1,43 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxcreate",
+  "description": "[WindowX/玩家自用] 创建一个属于自己的伪窗口",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str",
+      "description": "窗口 id（英文/数字/下划线）"
+    },
+    {
+      "name": "w",
+      "type": "float",
+      "description": "像素宽",
+      "default": 120.0
+    },
+    {
+      "name": "h",
+      "type": "float",
+      "description": "像素高",
+      "default": 80.0
+    },
+    {
+      "name": "x",
+      "type": "str",
+      "description": "中心 X，支持 960 / r+20 / p50",
+      "default": "p50"
+    },
+    {
+      "name": "y",
+      "type": "str",
+      "description": "中心 Y，支持 540 / r-20 / p50",
+      "default": "p50"
+    },
+    {
+      "name": "title",
+      "type": "str",
+      "description": "标题栏文字",
+      "default": "Window"
+    }
+  ]
+}

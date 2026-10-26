@@ -1,0 +1,27 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxbreath",
+  "description": "[WindowX/玩家自用] 呼吸式缩放",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "intensity",
+      "type": "float",
+      "default": 0.06
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "default": 0.5
+    },
+    {
+      "name": "cycles",
+      "type": "int",
+      "default": 3
+    }
+  ]
+}

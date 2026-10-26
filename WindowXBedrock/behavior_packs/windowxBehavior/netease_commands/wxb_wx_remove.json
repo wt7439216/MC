@@ -1,0 +1,13 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxremove",
+  "description": "[WindowX/玩家自用] 删除窗口（all=删除自己的全部）",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str",
+      "description": "窗口 id 或 all"
+    }
+  ]
+}

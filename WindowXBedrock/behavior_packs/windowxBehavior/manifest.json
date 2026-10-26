@@ -1,0 +1,17 @@
+{
+  "format_version": 1,
+  "header": {
+    "description": "WindowX Bedrock - in-game window show (P0 skeleton)",
+    "name": "WindowXBehavior",
+    "uuid": "8f6f0b5e-2f3c-4b1a-9e0f-1a2b3c4d5e01",
+    "version": [0, 1, 0]
+  },
+  "modules": [
+    {
+      "description": "WindowX behavior + python scripts",
+      "type": "data",
+      "uuid": "8f6f0b5e-2f3c-4b1a-9e0f-1a2b3c4d5e02",
+      "version": [0, 1, 0]
+    }
+  ]
+}

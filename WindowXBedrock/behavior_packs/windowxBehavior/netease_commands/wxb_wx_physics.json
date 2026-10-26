@@ -1,0 +1,57 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxphysics",
+  "description": "[WindowX/玩家自用] 启动物理（重力/摩擦/弹性/初速度/推力）",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "gravity",
+      "type": "float",
+      "default": 1200.0
+    },
+    {
+      "name": "friction",
+      "type": "float",
+      "default": 0.12
+    },
+    {
+      "name": "elasticity",
+      "type": "float",
+      "default": 0.45
+    },
+    {
+      "name": "sx",
+      "type": "str",
+      "description": "起始 X",
+      "default": "p50"
+    },
+    {
+      "name": "sy",
+      "type": "str",
+      "description": "起始 Y",
+      "default": "p20"
+    },
+    {
+      "name": "fx",
+      "type": "float",
+      "description": "持续推力 X",
+      "default": 0.0
+    },
+    {
+      "name": "fy",
+      "type": "float",
+      "description": "持续推力 Y",
+      "default": 0.0
+    },
+    {
+      "name": "fs",
+      "type": "float",
+      "description": "推力强度",
+      "default": 0.0
+    }
+  ]
+}

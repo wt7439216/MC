@@ -1,0 +1,22 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxtitle",
+  "description": "[WindowX/玩家自用] 设置/重置标题",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "action",
+      "type": "str",
+      "description": "可选: set,reset"
+    },
+    {
+      "name": "text",
+      "type": "str",
+      "default": ""
+    }
+  ]
+}

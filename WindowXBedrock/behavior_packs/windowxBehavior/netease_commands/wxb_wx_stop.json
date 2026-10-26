@@ -1,0 +1,13 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxstop",
+  "description": "[WindowX/玩家自用] 停止动画（省略=自己的全部）",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str",
+      "default": "all"
+    }
+  ]
+}

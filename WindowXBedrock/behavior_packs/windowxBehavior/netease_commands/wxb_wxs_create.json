@@ -1,0 +1,32 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxscreate",
+  "description": "[WindowX/演出/命令方块] 创建场景窗口（无玩家归属，命令方块可用）",
+  "permission_level": "game_directors",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "w",
+      "type": "float",
+      "default": 160.0
+    },
+    {
+      "name": "h",
+      "type": "float",
+      "default": 100.0
+    },
+    {
+      "name": "x",
+      "type": "str",
+      "default": "p50"
+    },
+    {
+      "name": "y",
+      "type": "str",
+      "default": "p50"
+    }
+  ]
+}

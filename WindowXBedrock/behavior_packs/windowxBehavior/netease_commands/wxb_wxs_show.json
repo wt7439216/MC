@@ -1,0 +1,12 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxsshow",
+  "description": "[WindowX/演出/命令方块] 显示场景窗口",
+  "permission_level": "game_directors",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    }
+  ]
+}

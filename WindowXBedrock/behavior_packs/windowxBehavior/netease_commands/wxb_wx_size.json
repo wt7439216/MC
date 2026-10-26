@@ -1,0 +1,33 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxsize",
+  "description": "[WindowX/玩家自用] 改变窗口单轴尺寸",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "axis",
+      "type": "str",
+      "description": "轴 | 可选: w,h"
+    },
+    {
+      "name": "value",
+      "type": "str",
+      "description": "目标尺寸，绝对/r相对/p百分比"
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "default": 1.0
+    },
+    {
+      "name": "ease",
+      "type": "str",
+      "description": "可选: linear,quad,quadout,quadinout,cubic,cubicout,cubicinout,quart,quartout,quartinout,quint,quintout,quintinout,sine,sineout,sineinout,expo,expoout,expoinout,circ,circout,circinout,bounce,bounceout,bounceinout,elastic,elasticout,elasticinout,back,backout,backinout,spring,wave,jump,delay,rush,slowmo,faststart,stutter,glitch,packetloss,freeze,overshoot,snap,jitter,step3,step5,step8",
+      "default": "linear"
+    }
+  ]
+}

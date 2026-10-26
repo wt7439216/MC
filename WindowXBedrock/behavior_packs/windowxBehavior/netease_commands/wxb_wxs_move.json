@@ -1,0 +1,31 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxsmove",
+  "description": "[WindowX/演出/命令方块] 移动场景窗口",
+  "permission_level": "game_directors",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "x",
+      "type": "str"
+    },
+    {
+      "name": "y",
+      "type": "str"
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "default": 1.0
+    },
+    {
+      "name": "ease",
+      "type": "str",
+      "description": "可选: linear,quad,quadout,quadinout,cubic,cubicout,cubicinout,quart,quartout,quartinout,quint,quintout,quintinout,sine,sineout,sineinout,expo,expoout,expoinout,circ,circout,circinout,bounce,bounceout,bounceinout,elastic,elasticout,elasticinout,back,backout,backinout,spring,wave,jump,delay,rush,slowmo,faststart,stutter,glitch,packetloss,freeze,overshoot,snap,jitter,step3,step5,step8",
+      "default": "linear"
+    }
+  ]
+}

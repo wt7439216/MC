@@ -1,0 +1,971 @@
+{
+  "namespace": "windowx_hud",
+  "main@common.base_screen": {
+    "type": "screen",
+    "absorbs_input": false,
+    "always_accepts_input": false,
+    "is_showing_menu": false,
+    "render_game_behind": true,
+    "render_only_when_topmost": false,
+    "should_steal_mouse": false,
+    "controls": [
+      {
+        "win0@windowx_hud.win0": {}
+      },
+      {
+        "win1@windowx_hud.win1": {}
+      },
+      {
+        "win2@windowx_hud.win2": {}
+      },
+      {
+        "win3@windowx_hud.win3": {}
+      },
+      {
+        "win4@windowx_hud.win4": {}
+      },
+      {
+        "win5@windowx_hud.win5": {}
+      },
+      {
+        "win6@windowx_hud.win6": {}
+      },
+      {
+        "win7@windowx_hud.win7": {}
+      },
+      {
+        "win8@windowx_hud.win8": {}
+      },
+      {
+        "win9@windowx_hud.win9": {}
+      },
+      {
+        "win10@windowx_hud.win10": {}
+      },
+      {
+        "win11@windowx_hud.win11": {}
+      },
+      {
+        "win12@windowx_hud.win12": {}
+      },
+      {
+        "win13@windowx_hud.win13": {}
+      },
+      {
+        "win14@windowx_hud.win14": {}
+      },
+      {
+        "win15@windowx_hud.win15": {}
+      },
+      {
+        "win16@windowx_hud.win16": {}
+      },
+      {
+        "win17@windowx_hud.win17": {}
+      },
+      {
+        "win18@windowx_hud.win18": {}
+      },
+      {
+        "win19@windowx_hud.win19": {}
+      },
+      {
+        "win20@windowx_hud.win20": {}
+      },
+      {
+        "win21@windowx_hud.win21": {}
+      },
+      {
+        "win22@windowx_hud.win22": {}
+      },
+      {
+        "win23@windowx_hud.win23": {}
+      }
+    ]
+  },
+  "bg": {
+    "type": "image",
+    "texture": "textures/ui/windowx/bg",
+    "is_new_nine_slice": true,
+    "nine_slice_left": 4,
+    "nine_slice_right": 4,
+    "nine_slice_top": 4,
+    "nine_slice_buttom": 4,
+    "size": [
+      "100%",
+      "100%"
+    ],
+    "layer": 0,
+    "anchor_from": "center",
+    "anchor_to": "center"
+  },
+  "shadow": {
+    "type": "image",
+    "texture": "textures/ui/windowx/shadow",
+    "is_new_nine_slice": true,
+    "nine_slice_left": 4,
+    "nine_slice_right": 4,
+    "nine_slice_top": 4,
+    "nine_slice_buttom": 4,
+    "size": [
+      "104%",
+      "108%"
+    ],
+    "offset": [
+      0,
+      "2%"
+    ],
+    "layer": -1,
+    "anchor_from": "center",
+    "anchor_to": "center"
+  },
+  "title": {
+    "type": "label",
+    "text": "Window",
+    "color": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "font_size": "normal",
+    "font_type": "smooth",
+    "text_alignment": "left",
+    "size": [
+      "88%",
+      "12%"
+    ],
+    "offset": [
+      "-4%",
+      "-40%"
+    ],
+    "layer": 4,
+    "anchor_from": "center",
+    "anchor_to": "center"
+  },
+  "content": {
+    "type": "image",
+    "texture": "textures/ui/windowx/content",
+    "size": [
+      "94%",
+      "76%"
+    ],
+    "offset": [
+      0,
+      "4%"
+    ],
+    "layer": 1,
+    "anchor_from": "center",
+    "anchor_to": "center"
+  },
+  "btn_img": {
+    "type": "image",
+    "texture": "textures/ui/windowx/titlebar",
+    "is_new_nine_slice": true,
+    "nine_slice_left": 4,
+    "nine_slice_right": 4,
+    "nine_slice_top": 4,
+    "nine_slice_buttom": 4,
+    "size": [
+      "100%",
+      "100%"
+    ]
+  },
+  "bar_drag": {
+    "type": "button",
+    "size": [
+      "100%",
+      "16%"
+    ],
+    "offset": [
+      0,
+      "-41%"
+    ],
+    "layer": 3,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "default_control": "default",
+    "hover_control": "hover",
+    "pressed_control": "pressed",
+    "is_handle_button_move_event": true,
+    "button_mappings": [],
+    "controls": [
+      {
+        "default@windowx_hud.btn_img": {}
+      },
+      {
+        "hover@windowx_hud.btn_img": {}
+      },
+      {
+        "pressed@windowx_hud.btn_img": {}
+      }
+    ]
+  },
+  "win0": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win1": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win2": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win3": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win4": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win5": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win6": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win7": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win8": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win9": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win10": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win11": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win12": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win13": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win14": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win15": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win16": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win17": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win18": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win19": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win20": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win21": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win22": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  },
+  "win23": {
+    "type": "panel",
+    "size": [
+      "6.2500%",
+      "7.4100%"
+    ],
+    "offset": [
+      "0.0000%",
+      "-30.0000%"
+    ],
+    "layer": 10,
+    "visible": false,
+    "anchor_from": "center",
+    "anchor_to": "center",
+    "controls": [
+      {
+        "shadow@windowx_hud.shadow": {}
+      },
+      {
+        "bg@windowx_hud.bg": {}
+      },
+      {
+        "content@windowx_hud.content": {}
+      },
+      {
+        "title@windowx_hud.title": {}
+      },
+      {
+        "bar_drag@windowx_hud.bar_drag": {}
+      }
+    ]
+  }
+}

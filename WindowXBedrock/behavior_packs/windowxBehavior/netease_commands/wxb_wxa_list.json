@@ -1,0 +1,13 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxalist",
+  "description": "[WindowX/管理] 列出某玩家（或全部）窗口",
+  "permission_level": "admin",
+  "args": [
+    {
+      "name": "player",
+      "type": "str",
+      "default": "all"
+    }
+  ]
+}

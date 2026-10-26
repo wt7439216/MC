@@ -1,0 +1,16 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxscore",
+  "description": "[WindowX/玩家自用] 把窗口属性写入记分板",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "objective",
+      "type": "str"
+    }
+  ]
+}

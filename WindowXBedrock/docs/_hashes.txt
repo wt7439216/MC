@@ -1,0 +1,4 @@
+9f5504eb0d152271978b4b14b4e60ace0e16614863410fa9bfae663c7d03f6de  1292  META-INF/neoforge.mods.toml
+8ba7908ff77a03808304d21a7922e64448e0dcb7812674ba53f4ebcc05ba3d45  499  windowx.mixins.json
+cf8acb8b1f94f9c3fbc607552a0d35c798ed5cdb0457b37e1f0b816fc4f61ec0  174080  windowx/native/windowx_wgc.dll
+b9061c55fca6df8714f7e1ec41e67e7c1c02cb66869c7b74110630d748258fe8  988  windowx_icon.png

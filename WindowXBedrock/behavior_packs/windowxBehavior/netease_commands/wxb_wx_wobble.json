@@ -1,0 +1,32 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxwobble",
+  "description": "[WindowX/玩家自用] 摇摆（正弦位移）",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "ix",
+      "type": "float",
+      "default": 6.0
+    },
+    {
+      "name": "iy",
+      "type": "float",
+      "default": 6.0
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "default": 1.0
+    },
+    {
+      "name": "cycles",
+      "type": "int",
+      "default": 3
+    }
+  ]
+}

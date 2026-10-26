@@ -1,0 +1,17 @@
+{
+  "format_version": "0.0.1",
+  "name": "wxlayer",
+  "description": "[WindowX/玩家自用] 设置层级与点击行为",
+  "permission_level": "any",
+  "args": [
+    {
+      "name": "id",
+      "type": "str"
+    },
+    {
+      "name": "layer",
+      "type": "str",
+      "description": "可选: normal,top,solid,clickthrough"
+    }
+  ]
+}
